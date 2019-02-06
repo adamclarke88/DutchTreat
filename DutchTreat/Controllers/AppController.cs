@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DutchTreat.Services;
 using DutchTreat.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,8 +10,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DutchTreat.Controllers
 {
-    public class AppController : Controller // AppController derives from Controller
-    { // a controller allows us to map a request that comes in to a specific action, and that action is where specific login will happen
+    public class AppController : Controller // a controller allows us to map a request that comes in to a specific action
+    {
+        private readonly INullMailService mailService;
+
+        public AppController(INullMailService mailService)
+        {
+            this.mailService = mailService;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -19,20 +27,32 @@ namespace DutchTreat.Controllers
         [HttpGet("contact")]
         public IActionResult Contact()
         {
-            ViewBag.Title = "Contact Us";
+
             return View();
         }
 
         [HttpPost("contact")]
         public IActionResult Contact(ContactViewModel model)
         {
-            ViewBag.Title = "Contact Us";
+            if (ModelState.IsValid)
+            {
+                // send email etc
+                mailService.SendMessage("shawn@widlermuth.com", model.Subject, $"from: {model.Name} - {model.Email}, Message: {model.Message}");
+                ViewBag.UserMessage = "Mail Sent";
+                ModelState.Clear();
+            };
+
             return View();
         }
 
         public IActionResult About()
         {
             ViewBag.Title = "About Us";
+            return View();
+        }
+
+        public IActionResult Test()
+        {
             return View();
         }
 

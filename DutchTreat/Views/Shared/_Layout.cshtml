@@ -7,27 +7,27 @@
 <head>
     <meta charset="utf-8" />
     <title>Dutch Treat: @ViewBag.Title</title>
+    <link href="~/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
 
 </head>
 <body>
-    <header>
-        <h1>Welcome to Dutch Treat</h1>
-        <menu>
-            <ul>
-                <li><a asp-controller="App" asp-action="Index">Home</a></li>
-                <li><a asp-controller="App" asp-action="Contact">Contact</a></li>
-                <li><a asp-controller="App" asp-action="About">About</a></li>
-            </ul>
-        </menu>
-    </header>
-    <section>
+
+    @{
+        Html.RenderPartial("_NavBar");
+    }
+
+    <section class="container">
         @RenderBody()
     </section>
-    <footer>Copyright 2019 Dutch Treat LLC</footer>
+    <footer class="container">
+        <div class="text-center">Copyright 2019 Dutch Treat LLC</div>
+    </footer>
 
     <script src="~/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="~/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/index.js"></script>
+    @RenderSection("scripts", false)
 </body>
 
 </html>
